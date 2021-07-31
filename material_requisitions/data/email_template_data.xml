@@ -1,0 +1,36 @@
+<odoo>
+
+        <record id="email_template_requisition" model="mail.template">
+        <field name="name">Request: Material requisition</field>
+        <field name="model_id" ref="material_requisitions.model_material_requisitions"/>
+        <field name="subject">Material Requisition: ${object.name | safe}</field>
+        <field name="email_to">${() | safe}</field>
+        <field name="partner_to">${''}</field>
+        <field name="body_html" type="html">
+<table border="0" cellpadding="0" cellspacing="0" width="590" style="background-color: white; border-collapse: collapse; margin-left: 20px;">
+    <tr>
+        <td valign="top" style="padding: 0px 10px;">
+            <div style="font-size: 13px; margin: 0px; padding: 0px;">
+                Hello,
+                <br/><br/>
+                This mail is to inform about requesting materials needed for our services.
+               <br></br>
+               Please find the attachment provided for more details of Material Requisitions.
+               <br></br>
+                <br></br>
+               Thanking You,
+                <br></br>
+                <strong>${object.requested_by.name}</strong><br/>
+                <br/>
+            </div>
+        </td>
+    </tr>
+</table></field>
+
+            <field name="report_template" ref="material_requisitions_report"/>
+            <field name="report_name">${(object.name or '').replace('/','_')}</field>
+        <field name="auto_delete" eval="True"/>
+        <field name="lang">${object.lang or ''}</field>
+    </record>
+
+</odoo>

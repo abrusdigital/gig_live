@@ -1,0 +1,47 @@
+<?xml version="1.0" ?>
+<odoo>
+		<record model="ir.ui.menu" id="industry_fsm.project_task_menu_planning_by_user_fsm">
+  			<field name="name">By Schedule</field>
+		</record>
+		<record id="industry_fsm.project_task_action_fsm_planning_groupby_user" model="ir.actions.act_window">
+			<field name="name">Schedule</field>
+		</record>
+		
+	   <record id="project_task_view_search_fsm_inherit" model="ir.ui.view">      
+			<field name="name">project.task.view.search.fsm.inherit</field>       
+			<field name="model">project.task</field>       
+			<field name="inherit_id" ref="industry_fsm.project_task_view_search_fsm"/>       
+			<field name="arch" type="xml">           
+			 <xpath expr="//search/field[@name='active']" position="before">             
+				<field name="area_id" string="Area/Zone"/>
+				<field name="building_id" string="Building"/>
+			 </xpath> 
+			 <xpath expr="//search/group/filter[@name='groupby_company']" position="before">             
+				<filter string="Area/Zone" name="groupby_area" context="{'group_by':'area_id'}"/>
+				<filter string="Building" name="groupby_building" context="{'group_by':'building_id'}"/>
+				<!-- <filter string="Assigned To" name="groupby_user_id" context="{'group_by':'user_id'}"/>  -->          
+			 </xpath>       
+			</field>
+		</record>  
+		
+		<record id="industry_fsm.project_task_action_fsm_planning_groupby_user" model="ir.actions.act_window">
+			<field name="context" eval="{'search_default_groupby_area': 1,'search_default_groupby_building': 2,'search_default_groupby_user': 3, 'fsm_mode': 1, 'task_nameget_with_hours': 1}"/>
+		</record>
+		
+		<record id="make_invisible" model="res.groups">
+    		<field name="name">Invisible</field>
+		</record>
+		
+		<record id="industry_fsm.project_task_menu_planning_by_project_fsm" model="ir.ui.menu">
+			<field name="groups_id" eval="[(6,0,[ref('make_invisible')])]"/>
+		</record>
+		
+		<record id="industry_fsm_report.project_task_menu_planning_by_project_fsm" model="ir.ui.menu">
+			<field name="groups_id" eval="[(6,0,[ref('make_invisible')])]"/>
+		</record>
+		
+		
+
+
+		
+</odoo>
