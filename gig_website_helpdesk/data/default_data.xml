@@ -1,0 +1,7 @@
+<odoo>
+  <data noupdate="1">
+    <record id="create_stage" model="helpdesk.stage">
+		<field name="name">Open</field>
+	</record>
+  </data>
+</odoo>

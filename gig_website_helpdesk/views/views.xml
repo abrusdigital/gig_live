@@ -1,0 +1,44 @@
+<odoo>
+  <data>
+        <record id="gig_helpdesk_ticket_inherit_view" model="ir.ui.view">
+            <field name="name">helpdesk.ticket</field>
+            <field name="model">helpdesk.ticket</field>
+            <field name="inherit_id" ref="helpdesk.helpdesk_ticket_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='email_cc']" position="after">
+                    <field name="area_id"/>
+                    <field name="building_id"/>
+                </xpath>
+                <xpath expr="//field[@name='user_id']" position="attributes">
+                    <attribute name="readonly">1</attribute>
+                </xpath>
+                 <xpath expr="//field[@name='user_id']" position="after">
+                    <field name="tranfer_to" />
+                </xpath>
+            </field>
+        </record>
+        <record id="gig_helpdesk_service_field_inherit_view" model="ir.ui.view">
+            <field name="name">project.task</field>
+            <field name="model">project.task</field>
+            <field name="inherit_id" ref="project.view_task_form2"/>
+            <field name="arch" type="xml">
+                <xpath expr="//div[@class='oe_button_box']" position="inside">
+                   
+                    <button style="color:red;"  name="action_open_building_googlemaps"
+                       type="object"
+                       string = "Location"
+                       class="oe_stat_button"
+                       icon="fa-location-arrow">
+                    </button>
+                </xpath>
+                <xpath expr="//field[@name='user_id']" position="after">
+                    <field name="tranfer_to" readonly="1"/>
+                </xpath>
+                <xpath expr="//field[@name='partner_phone']" position="after">
+                    <field name="area_id"/>
+                    <field name="building_id"/>
+                </xpath>
+            </field>
+        </record>
+  </data>
+</odoo>

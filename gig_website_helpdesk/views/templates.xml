@@ -1,0 +1,212 @@
+<odoo>
+    <data>
+
+ <template id="gig_helspdesk_form_submit_page_inherit" name="Ticket Received" inherit_id="website_helpdesk_form.ticket_submited">
+    <xpath expr="//div[@id='wrap']" position="replace">
+        <div id="wrap" class="oe_structure oe_empty">
+                <div class="container">
+                    <style>
+                        .row{
+                            display: block;
+                            margin-bottom: 50px;
+                            margin-top: 10px;
+                            }
+                        h1 {
+                            font-size: revert;
+                        }
+                    </style>
+                    <div class="row">
+                        <t t-if="request.session.get('form_builder_model_model', '') == 'helpdesk.ticket'">
+                            <t t-set="ticket" t-value="request.website._website_form_last_record().sudo()"/>
+                        </t>
+                        <h1 class="text-center"><i class="fa fa-check-circle fa-2x text-success" role="img" aria-label="Success" title="Success"/></h1>
+                        <t t-if="ticket">
+                            <h1 class="text-center">Your Ticket Number is <a t-if="request.session.uid" t-attf-href="/helpdesk/ticket/#{ticket.id}">#<span t-field="ticket.id"/></a><t t-if="not request.session.get('uid')">#<span t-field="ticket.id"/></t>.</h1>
+                        </t>
+                        <h1 class="text-center">Thank you for submitting your issue, our team will get right on it!</h1>
+                    </div>
+                </div>
+            </div>
+    </xpath>
+ </template>
+
+<template id="website_helpdesk_form.ticket_submit_form" name="Helpdesk: Submit a Ticket Form">
+        <div class="container">
+            <h2 class="text-muted">
+                Submit a Ticket
+            </h2>
+            <span class="hidden" data-for="helpdesk_ticket_form" t-att-data-values="{'partner_name': default_values.get('name', ''), 'partner_email': default_values.get('email', ''), 'team_id': team and team.id or False}" />
+            <div id="helpdesk_section">
+                <section id="forms" class="s_website_form" data-vcss="001" data-snippet="s_website_form">
+                    <div class="container">
+                         <style>
+                    .fstdropdown{
+                    min-height:35px;
+                    }
+                </style>
+                    <script  type="text/javascript"  src="/gig_website_helpdesk/static/src/js/fstdropdown.min.js"/>
+                    <link href="/gig_website_helpdesk/static/src/css/fstdropdown.min.css" rel="stylesheet" type="text/css" media="all"/>
+
+
+                            <script src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
+                        <script>
+                        $( document ).ready(function() {
+                        var area = document.getElementById("area_id").value;
+                        getBuilding(area);
+                        $('#area_id').on('change', function() {
+                            $.ajax({
+                                type: 'GET',
+                                url : '/get/buldings',
+                                data: {
+                                    'area' : this.value,
+                                },
+                                success: function(response){
+                                   var data = '<option value="" >-Select Building-</option>';
+                                   var obj = JSON.parse(response);
+                                    if(obj.building.length > 0){
+                                        obj.building.forEach(function(building) {
+                                            data += '<option value="'+ building.id +'">' + building.name + '</option>';
+                                        });
+                                        $('#building_id').empty().append(data);
+                                        document.getElementById("building_id").fstdropdown.rebind();
+                                    }
+                                },
+                            });
+                        });
+                        });
+
+                        function getBuilding(area) {
+                         $.ajax({
+                                type: 'GET',
+                                url : '/get/buldings',
+                                data: {
+                                    'area' : area,
+                                },
+                                success: function(response){
+                                   var data ;
+                                   var obj = JSON.parse(response);
+                                    if(obj.building.length > 0){
+                                        obj.building.forEach(function(building) {
+                                            data += '<option value="'+ building.id +'">' + building.name + '</option>';
+                                        });
+                                        $('#building_id').empty().append(data);
+                                        document.getElementById("building_id").fstdropdown.rebind();
+                                    }
+                                },
+                            });
+
+                             }
+                        </script>
+                        <form id="helpdesk_ticket_form" action="/website_form/" method="post" enctype="multipart/form-data" class="o_mark_required" data-mark="*" data-model_name="helpdesk.ticket" data-success-mode="redirect" data-success-page="/your-ticket-has-been-submitted" data-editable-form="false"  hide-change-model="true">
+                            <div class="s_website_form_rows row s_col_no_bgcolor">
+                                <div class="form-group col-12 s_website_form_field s_website_form_model_required" data-type="char" data-name="Field">
+                                    <div class="row s_col_no_resize s_col_no_bgcolor">
+                                        <label class="col-form-label col-auto s_website_form_label" style="width: 200px" for="helpdesk1">
+                                            <span class="s_website_form_label_content">Your Name</span>
+                                            <span class="s_website_form_mark"> *</span>
+                                        </label>
+                                        <div class="col-sm col-xs-12">
+                                            <input id="helpdesk1" type="text" class="form-control s_website_form_input" name="partner_name" required="1"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group col-12 s_website_form_field s_website_form_model_required" data-type="email" data-name="Field">
+                                    <div class="row s_col_no_resize s_col_no_bgcolor">
+                                        <label class="col-form-label col-auto s_website_form_label" style="width: 200px" for="helpdesk2">
+                                            <span class="s_website_form_label_content">Your Email</span>
+                                            <span class="s_website_form_mark"> *</span>
+                                        </label>
+                                        <div class="col-sm col-xs-12">
+                                            <input id="helpdesk2" type='email' class='form-control s_website_form_input' name="partner_email" required="1"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group col-12 s_website_form_field s_website_form_model_required" data-type="char" data-name="Field">
+                                    <div class="row s_col_no_resize s_col_no_bgcolor">
+                                        <label class="col-form-label col-auto s_website_form_label" style="width: 200px" for="helpdesk3">
+                                            <span class="s_website_form_label_content">Subject</span>
+                                            <span class="s_website_form_mark"> *</span>
+                                        </label>
+                                        <div class="col-sm col-xs-12">
+                                            <input id="helpdesk3" type="text" class="form-control s_website_form_input" name="name" required="1"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group col-12 s_website_form_field s_website_form_model_required" data-type="char" data-name="Field">
+                                    <div class="row s_col_no_resize s_col_no_bgcolor">
+                                        <label class="col-form-label col-auto s_website_form_label" style="width: 200px" for="helpdesk3">
+                                            <span class="s_website_form_label_content">Area/Zone</span>
+                                            <span class="s_website_form_mark"> *</span>
+                                        </label>
+                                        <div class="col-sm col-xs-12">
+                                            <!-- <input id="helpdesk3" type="text"  name="name" required="1"/> -->
+                                            <select required="1" name="area_id" id="area_id" class="form-control s_website_form_input">
+                                            <!-- <option value="" >Select </option> -->
+                                            <t t-foreach="website.get_areaZone()" t-as="zone">
+                                                <option t-att-value="zone.id">
+                                                    <t t-esc="zone.name" />
+                                                </option>
+                                            </t>
+                                        </select>
+                                        </div>
+                                    </div>
+                                </div>
+                               <div class="form-group col-12 s_website_form_field s_website_form_model_required" data-type="char" data-name="Field">
+                                    <div class="row s_col_no_resize s_col_no_bgcolor">
+                                        <label class="col-form-label col-auto s_website_form_label" style="width: 200px" for="helpdesk3">
+                                            <span class="s_website_form_label_content">Select Building</span>
+                                            <span class="s_website_form_mark"> *</span>
+                                        </label>
+                                        <div class="col-sm col-xs-12">
+                                            <!-- <input id="helpdesk3" type="text"  name="name" required="1"/> -->
+                                            <select required="1" name="building_id" id="building_id" class="form-control fstdropdown-select" style="width:100% !important;">
+                                            <option value="">Select Building</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group col-12 s_website_form_field" data-type="text" data-name="Field">
+                                    <div class="row s_col_no_resize s_col_no_bgcolor">
+                                        <label class="col-form-label col-auto s_website_form_label" style="width: 200px" for="helpdesk4">
+                                            <span class="s_website_form_label_content">Description</span>
+                                        </label>
+                                        <div class="col-sm col-xs-12">
+                                            <textarea id="helpdesk4" class="form-control s_website_form_input" name="description"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group col-12 s_website_form_field s_website_form_custom" data-type="binary" data-name="Field">
+                                    <div class="row s_col_no_resize s_col_no_bgcolor">
+                                        <label class="col-form-label col-auto s_website_form_label" style="width: 200px" for="helpdesk5">
+                                            <span class="s_website_form_label_content">Attachment(s)</span>
+                                        </label>
+                                        <div class="col-sm col-xs-12">
+                                            <input id="helpdesk5" type="file" name="attachments" class="form-control s_website_form_input" multiple="true" accept="image/*,application/pdf,video/*"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group col-12 s_website_form_field s_website_form_dnone">
+                                    <div class="row s_col_no_resize s_col_no_bgcolor">
+                                        <label class="col-form-label col-auto s_website_form_label" style="width: 200px" for="helpdesk6">
+                                            <span class="s_website_form_label_content">Team</span>
+                                        </label>
+                                        <div class="col-sm col-xs-12">
+                                            <input id="helpdesk6" type="hidden" class="form-control s_website_form_input" name="team_id"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group col-12 s_website_form_submit" data-name="Submit Button">
+                                    <div style="width: 200px;" class="s_website_form_label"/>
+                                    <a href="#" role="button" class="btn btn-primary btn-lg s_website_form_send">Submit</a>
+                                    <span id="s_website_form_result"></span>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </template>
+
+    </data>
+</odoo>
