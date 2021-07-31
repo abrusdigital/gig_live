@@ -1,0 +1,11 @@
+<odoo>
+  <data>
+    <template id="cheklist_backend_css" name="Checklist Changes added" inherit_id="web.assets_backend">
+      <xpath expr=".">
+          <link rel="stylesheet" href="/gig_checklist/static/src/scss/theme_accent.scss"/>
+          <link rel="stylesheet" href="/gig_checklist/static/src/scss/section_and_note_backend.scss"/>
+          <script type="text/javascript" src="/gig_checklist/static/src/js/section_and_note_fields_backend.js"></script>
+      </xpath>
+    </template>
+  </data>
+</odoo>

@@ -1,0 +1,70 @@
+
+
+<!-- <?xml version="1.0" encoding="UTF-8"?> -->
+<odoo>
+    <data>
+        <!-- explicit list view definition -->
+        <record model="ir.ui.view" id="gig_checklist.checklist_master_list">
+            <field name="name">Inspection Checklist</field>
+            <field name="model">checklist.master.data</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name" string="Name" />
+                    <field name="equipment_id" string="EquipmentS" />
+                    <field name="model" string="Model" />
+                    <field name="serial_no" string="Serial Number" />
+                </tree>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="gig_checklist.checklist_master_form">
+            <field name="name">Inspection Checklist</field>
+            <field name="model">checklist.master.data</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name" string="Name" />
+                                <field name="equipment_id" string="Equipment" />
+                            </group>
+                            <group>
+                                <field name="model" string="Model" />
+                                <field name="serial_no" string="Serial Number" />
+                            </group>
+                        </group>
+                        <field name="checklist_item_ids" mode="tree,kanban" widget="gig_section_and_note_one2many">
+                          <tree editable="bottom">
+                              <control>
+                                  <create name="add_line_control" string="Add a line"/>
+                                  <create name="add_section_control" string="Add a section"
+                                          context="{'default_display_type': 'line_section'}"/>
+                              </control>
+                              <field name="sl_no" string="SL No"/>
+                              <field name="name" widget="gig_section_and_note_text" optional="show"/>
+                              <field name="display_type" invisible="1"/>
+                              
+                          </tree>
+                      </field>  
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- actions opening views on models -->
+        <record model="ir.actions.act_window" id="gig_checklist.action_checklist_product">
+            <field name="name">Equipments</field>
+            <field name="res_model">checklist.equipment</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <record model="ir.actions.act_window" id="gig_checklist.action_checklist_master_data">
+            <field name="name">Inspection Checklist</field>
+            <field name="res_model">checklist.master.data</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <!-- Top menu item -->
+        <menuitem name="Check List" id="gig_checklist.menu_root" web_icon="gig_checklist,static/description/checklist.png" groups="gig_checklist.checklist_manager" />
+        <!-- menu categories and actions -->
+        <menuitem name="Equipments" id="gig_checklist.product_menu" parent="gig_checklist.menu_root" action="gig_checklist.action_checklist_product" />
+        <menuitem name="Inspection Checklist" id="gig_checklist.masterdata_menu" parent="gig_checklist.menu_root" action="gig_checklist.action_checklist_master_data" />
+    </data>
+</odoo>

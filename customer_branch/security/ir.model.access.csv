@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_customer_branch_id,access_customer_branch,model_customer_branch,base.group_user,1,1,1,1
+access_building_building_id,access_building_building,model_building_building,base.group_user,1,1,1,1

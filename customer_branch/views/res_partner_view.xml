@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="res_partner_view_buttons" model="ir.ui.view">
+            <field name="name">res.partner.view.buttons</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form" />
+            <field name="priority" eval="3"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//page[@name='sales_purchases']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//page[@name='internal_notes']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <div name="button_box" position="inside">
+                    <button class="oe_stat_button" type="object" name="action_open_areas" 
+                        icon="fa-sitemap">
+                       <field string="Areas" name="areas_count" widget="statinfo"/>
+                    </button>
+                    <button class="oe_stat_button" type="object" name="action_open_buildings" 
+                        icon="fa-th">
+                       <field string="Buildings" name="buildings_count" widget="statinfo"/>
+                    </button>
+                </div>
+                <page name="contact_addresses" position="before">
+                    <page name="area_info" string="Area Details" autofocus="autofocus">
+                        <field name="area_ids" mode="kanban" readonly="True">
+                            <kanban>
+                                <field name="id"/>
+                                <field name="arabic_name"/>
+                                <field name="name"/>
+                                <field name="mobile"/>
+                                <field name="phone"/>
+                                <field name="area_related_contacts"/>
+
+                                <templates>
+                                    <t t-name="kanban-box">
+                                        <div class="oe_kanban_details oe_kanban_global_click">
+                                            <div style="color: black;font-size: 14px;" t-if="record.name.raw_value"><t t-esc="record.name.value"/></div>
+                                            <div t-if="record.arabic_name.raw_value"><t t-esc="record.arabic_name.value"/></div>
+                                            <div t-if="record.phone.raw_value"><t t-esc="record.phone.value"/></div>
+                                            <div t-if="record.mobile.raw_value"><t t-esc="record.mobile.value"/></div>
+                                            <div t-if="record.area_related_contacts.raw_value">Related Contacts : <t t-esc="record.area_related_contacts.value"/></div>
+                                        </div>
+                                        
+                                        </t>
+
+                                    </templates>
+
+                            </kanban>
+                            <tree>
+                                <field name="name"/>
+                                <field name="arabic_name" string="Arabic name"/>
+                                <field name="contact_name" invisible="1"/>
+                                <field name="area_related_contacts"/>
+                                <field name="mobile"/>
+                                <field name="phone"/>
+                                <button name="action_open_googlemaps" type="object" string="view Location" icon="fa-location-arrow"/>
+                            </tree>
+                        </field>
+                   </page>
+                    <page name="building_info" string="Building Details">
+                        <field name="bulding_ids" readonly="True">
+                            <tree>
+                                <field name="name"/>
+                                <field name="arabic_name" string="Arabic name"/>
+                               <field name="contact_name" invisible="1"/>
+                                <field name="mobile" invisible="1"/>
+                                <field name="phone" />
+                                <field name="floor"/>
+                                <field name="room"/>
+                                <button name="action_open_googlemaps" type="object" string="view Location" icon="fa-location-arrow"/>
+                            </tree>
+                        </field>
+                   </page>
+                </page>
+            </field>
+        </record>
+
+
+       
+
+
+        <record id="base.view_res_partner_filter" model="ir.ui.view">
+            <field name="name">res.partner.select</field>
+            <field name="model">res.partner</field>
+            <field name="arch" type="xml">
+                <search string="Search Partner">
+                    <field name="name"
+                        filter_domain="['|', '|', ('display_name', 'ilike', self), ('ref', '=', self), ('email', 'ilike', self)]"/>
+                    <field name="parent_id" domain="[('is_company', '=', True)]" operator="child_of"/>
+                    <field name="email" filter_domain="[('email', 'ilike', self)]"/>
+                    <field name="phone" filter_domain="['|', ('phone', 'ilike', self), ('mobile', 'ilike', self)]"/>
+                    <field name="category_id" string="Tag" filter_domain="[('category_id', 'child_of', self)]"/>
+                    <field name="user_id"/>
+                    <separator/>
+                    <filter string="Individuals" name="type_person" domain="[('is_company', '=', False)]"/>
+                    <filter string="Companies" name="type_company" domain="[('is_company', '=', True)]"/>
+                    <separator/>
+                    <filter string="Customer" name="customer" domain="[('is_customer', '=', True),('parent_id','=',False)]"/>
+
+                    <filter string="Archived" name="inactive" domain="[('active', '=', False)]"/>
+                    <separator/>
+                    <group expand="0" name="group_by" string="Group By">
+                        <filter name="salesperson" string="Salesperson" domain="[]" context="{'group_by' : 'user_id'}" />
+                        <filter name="group_company" string="Company" context="{'group_by': 'parent_id'}"/>
+                        <filter name="group_country" string="Country" context="{'group_by': 'country_id'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+
+
+        <record id="contacts.action_contacts" model="ir.actions.act_window">
+        <field name="name">Contacts</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">res.partner</field>
+        <field name="view_mode">kanban,tree,form,activity</field>
+        <field name="search_view_id" ref="base.view_res_partner_filter"/>
+        <field name="context">{'default_is_customer': True,'search_default_customer':1}</field>
+        <field name="help" type="html">
+          <p class="o_view_nocontent_smiling_face">
+            Create a contact in your address book
+          </p><p>
+            Odoo helps you to easily track all activities related to a customer.
+          </p>
+        </field>
+    </record>
+        
+    </data>
+</odoo>

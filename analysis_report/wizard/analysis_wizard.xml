@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+    
+    	   <record id="wizard_analysis_form_view" model="ir.ui.view">
+	        <field name="name">wizard.analysis.form.view</field>
+	        <field name="model">analysis.wizard</field>
+	        <field name="arch" type="xml">
+	            <form string="Analysis Report">
+	               <group col="4" colspan="4">	                  
+	                    <field name="from_date"/>
+		                <field name="to_date"/>
+		                <field name="customer_id"/>
+		                <field name="area_id"/>
+		                <field name="building_id"/>	
+				  </group>
+				  <footer>
+				  	<button name="print_report" string="Print" type="object" class="oe_highlight" />
+				  	<button string="Cancel" class="bin-primary" special="cancel"/>
+				  </footer> 
+	            </form>
+	        </field>
+        </record> 
+        
+    	 <record id="wizard_analysis_action" model="ir.actions.act_window">
+	       <field name="name">Analysis Report</field>
+	       <field name="type">ir.actions.act_window</field>
+	       <field name="res_model">analysis.wizard</field>
+	       <field name='view_mode'>form</field>	 
+	       <field name="view_id" ref="wizard_analysis_form_view"/>      
+	       <field name="target">new</field> 	       
+	    </record> 
+		   
+    </data>
+ </odoo>

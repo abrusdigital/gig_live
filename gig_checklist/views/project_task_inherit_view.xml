@@ -1,0 +1,80 @@
+<odoo>
+    <data>
+
+      
+    <record id="gig_checklist_service_field_inherit_view" model="ir.ui.view">
+        <field name="name">project.task</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="project.view_task_form2" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='user_id']" position="attributes">
+                <attribute name="domain">[('emp_area_ids','in',area_id)]</attribute>
+            </xpath>
+            
+            <xpath expr="//field[@name='priority']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='tag_ids']" position="after">
+                <field name="priority" widget="priority" />
+            </xpath>
+            <xpath expr="//field[@name='partner_phone']" position="after">
+                <field name="is_maintanance" string="Maintenance Inspection" />
+                <field name="checklist_progress" widget="percentpie" attrs="{'invisible': [('is_maintanance', '=', False)]}" string="Checklist Progress" />
+            </xpath>
+            <xpath expr="//page[@name='extra_info']" position="after">
+                <page name="check-list" string="Checklist" attrs="{'invisible': [('is_maintanance', '=', False)]}">
+                    <group>
+                        <field name="checklist_id" string="Checklist" />
+                        <field name="is_schedule_created" invisible="1" />
+                    </group>
+                    <field name="master_checklist_ids" widget="gig_section_and_note_one2many" mode="tree,kanban" context="{'default_project_id': active_id,}">
+                        <tree editable="bottom">
+                          <control>
+                            <create name="add_line_control" string="Add a line"/>
+                            <create name="add_section_control" string="Add a section"
+                                    context="{'default_display_type': 'line_section'}"/>
+                        </control>
+                            <field name="sl_no" string="Sl No" />
+                            <field name="name"  widget="gig_section_and_note_text" optional="show"/>
+                            <field name="bool_y" string="Y" widget="checkbox" />
+                            <field name="bool_n" string="N" widget="checkbox"/>
+                            <field name="bool_na" string="NA" widget="checkbox"/>
+                            <field name="remarks" string="Remarks" />
+                          <field name="display_type" invisible="1"/>
+                            
+                            <field name="project_id" invisible="1" />
+                        </tree>
+                    </field>
+                </page>
+                <page name="shedules" string="Upcoming Schedule" attrs="{'invisible': [('is_maintanance', '=', False)]}" groups="industry_fsm.group_fsm_manager">
+                    <group>
+                        <group>
+                            <field name="delay_unit" string="Interval Type" />
+                            <field name="delay_count" string="Interval Delays" />
+                        </group>
+                        <group>
+                            <button name="create_schedule_tasks" type="object" string="Generate Schedules " class="oe_highlight" icon="fa-calendar" attrs="{'invisible': [('is_schedule_created','=',True)]}">
+                                <!-- <i class="far fa-clock"></i> -->
+                            </button>
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+        <record id="gig_checklist_helpdesk_inherit_view" model="ir.ui.view">
+            <field name="name">helpdesk</field>
+            <field name="model">helpdesk.ticket</field>
+            <field name="inherit_id" ref="helpdesk.helpdesk_ticket_view_form" />
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='description']" position="after">
+
+                    <group>
+                           <field name="note" />
+                        </group>
+                </xpath>
+            </field>
+            </record>
+    </data>
+</odoo>

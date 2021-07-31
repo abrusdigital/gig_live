@@ -1,0 +1,45 @@
+<odoo>
+  <data>
+    <record id="new_admin_ticket_request_email_template" model="mail.template">
+      <field name="name">Ticket: Reception Acknowledgment</field>
+      <field name="model_id" ref="helpdesk.model_helpdesk_ticket"/>
+      <field name="subject">${object.display_name}</field>
+      <field name="email_from">noreply@gig.ae</field>
+      <!-- <field name="email_to">${(object.partner_email if not object.sudo().partner_id.email or object.sudo().partner_id.email != object.partner_email else '') | safe}</field> -->
+      <!-- <field name="partner_to">${object.partner_id.id if object.sudo().partner_id.email and object.sudo().partner_id.email == object.partner_email else ''}</field> -->
+      <field name="body_html" type="xml">
+      <div>
+        Dear Admin,<br /><br />
+        
+        New Ticket has been received ,The reference of your ticket is __id__.<br /><br />
+
+        Thank you,<br/><br/>
+        ${object.team_id.name or 'Helpdesk'} Team.
+      </div>
+      </field>
+      <field name="lang">${object.partner_id.lang or object.user_id.lang or user.lang}</field>
+      <field name="auto_delete" eval="False"/>
+    </record>
+
+    <record id="fsm_admin_request_email_template" model="mail.template">
+      <field name="name">Ticket: Reception Acknowledgment</field>
+      <field name="model_id" ref="project.model_project_task"/>
+      <field name="subject">${object.display_name}</field>
+      <field name="email_from">noreply@gig.ae</field>
+      <!-- <field name="email_to">${(object.partner_email if not object.sudo().partner_id.email or object.sudo().partner_id.email != object.partner_email else '') | safe}</field> -->
+      <!-- <field name="partner_to">${object.partner_id.id if object.sudo().partner_id.email and object.sudo().partner_id.email == object.partner_email else ''}</field> -->
+      <field name="body_html" type="xml">
+      <div>
+        Dear Admin,<br /><br />
+        
+        New Ticket has been received ,The reference of your ticket is __name__.<br /><br />
+
+        Thank you,<br/><br/>
+        Helpdesk Team.
+      </div>
+      </field>
+      <field name="lang">${object.partner_id.lang or object.user_id.lang or user.lang}</field>
+      <field name="auto_delete" eval="False"/>
+    </record>
+  </data>
+</odoo>

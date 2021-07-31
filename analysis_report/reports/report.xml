@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<report
+            id="analysis_report_xls"
+            model="analysis.wizard"
+            string="Analysis Report Excel"
+            report_type="xlsx"
+            name="analysis_report.report_analysis_xls"
+            file="analysis_report.report_analysis_xls"/>
+ </odoo>

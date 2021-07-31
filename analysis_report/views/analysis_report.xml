@@ -1,0 +1,11 @@
+<?xml version="1.0" ?>
+<odoo>
+ 	
+        
+	<menuitem id="helpdesk_report_analysis" name="Analysis Report"
+         parent="helpdesk.menu_helpdesk_root" action="wizard_analysis_action"/>
+	 
+	 <menuitem id="project_inherit_menu" name="Analysis Report"
+         parent="industry_fsm.fsm_menu_root" action="wizard_analysis_action"/>
+	 
+</odoo>
